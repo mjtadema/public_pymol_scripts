@@ -40,12 +40,11 @@ except (FileNotFoundError, ResponseOutOfDate):
     objects = response.json()
 
 # Search for pymol modules
-scriptname = "loader.py"
+exclude =  ["loader.py", "readme.py"]
 modules = {}
 for obj in objects:
     name = obj['name']
-    # But skip this file
-    if name == scriptname: continue
+    if name in exclude: continue
     if name.endswith(".py"):
         modules[obj['name']] = obj['download_url']
 
