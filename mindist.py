@@ -16,10 +16,9 @@ selection2  : selection string for atoms in the selection selection
 n           : number of distances to calculate (default: 1)
 t           : threshold of number of atoms if using non-numpy calculation (default: 500)
 unique      : only one distance per residue (default: 0 (0=no, 1=yes))
-
-Copyright Matthijs J. Tadema, MSc (2020)
 """
-version = 20201211_6
+author = "Matthijs J. Tadema, MSc (2020)"
+version = 20201213
 from pymol import cmd
 try:
     import numpy as np

@@ -6,10 +6,9 @@ Usage: mutate selection, resname
 
 selection   : selection string, all residues are mutated to the same resname
 resname     : name of the residue to mutate to, can be one or three letter code
-
-Copyright Matthijs J. Tadema, MSc (2020)
 """
-version = 20201211
+author = "Matthijs J. Tadema, MSc (2020)"
+version = 20201213
 
 from pymol import cmd
 
