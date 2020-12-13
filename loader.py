@@ -10,6 +10,8 @@ from pathlib import Path
 
 # Query the git repo for all files in root of branch master 
 response = requests.get(r'https://api.github.com/repos/mjtadema/public_pymol_scripts/contents?ref=master')
+if response.status_code is not 200:
+    raise Exception(response.text)
 objects = response.json()
 
 # Search for pymol modules
