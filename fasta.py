@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """
-Very simple script to just print the fasta sequence of a selection
+DESCRIPTION
+    Print the fasta sequence of a selection
 
-Usage: fasta selection
+ARGUMENTS
+    selection: selection string
 
-selection: selection string
+EXAMPLE
+    fasta chain A
 """
 author = "Matthijs J. Tadema, MSc (2020)"
-version = 20201214
+version = "20201214_1"
 
 from pymol import cmd
 

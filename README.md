@@ -5,6 +5,23 @@ Collection of pymol scripts written primarily for Giovanni Maglia's group member
 ## Usage:
 Copy paste `run https://raw.githubusercontent.com/mjtadema/public_pymol_scripts/master/loader.py` into [your own pymolrc file](https://pymolwiki.org/index.php/Pymolrc). This will make PyMOL load the scripts automatically at startup.
 
+### split_chains
+
+DESCRIPTION
+    Split object into chains.
+    By default chains are also colored.
+
+ARGUMENTS
+    object: object to split (default: top object)
+    color: color by chain (default: 1)
+
+EXAMPLE
+    split_chains obj01
+    split_chains color=0
+
+SEE ALSO
+    merge_chains
+
 ### axes
 
 DESCRIPTION
@@ -63,9 +80,27 @@ EXAMPLE
 
 ### fasta
 
-Very simple script to just print the fasta sequence of a selection
+DESCRIPTION
+    Print the fasta sequence of a selection
 
-Usage: fasta selection
+ARGUMENTS
+    selection: selection string
 
-selection: selection string
+EXAMPLE
+    fasta chain A
+
+### merge_chains
+
+DESCRIPTION
+    Merge chains back into a common object
+
+ARGUMENTS
+    name: base name of the original object
+
+EXAMPLE
+    split_chains obj
+    merge_chains obj
+
+SEE ALSO
+    split_chains
 
