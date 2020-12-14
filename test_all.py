@@ -2,6 +2,7 @@ from pymol import cmd
 from mindist import mindist
 from mutate import mutate
 from fasta import fasta
+from axes import axes
 
 cmd.fetch('4tsy')
 
@@ -24,3 +25,7 @@ def test_mutate():
 
 def test_fasta():
     fasta('(all)')
+
+def test_axes():
+    axes()
+    axes(zero=1)

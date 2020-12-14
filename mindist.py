@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 """
-Calculate distances between all atoms
-in selection1 and selection2, then make a 
-distance object for the smallest distance.
+DESCRIPTION
+    Calculate distances between all atoms
+    in selection1 and selection2, then make a 
+    distance object for the smallest distance.
+    
+    If you want to calculate the shortest distance for a very 
+    large selection, consider installing anaconda (https://www.anaconda.com/).
+    Anaconda provides numpy which is needed for faster calculations.
+    
+ARGUMENTS
+    selection1  : selection string for atoms in the first selection
+    selection2  : selection string for atoms in the selection selection
+    n           : number of distances to calculate (default: 1)
+    t           : threshold of number of atoms if using non-numpy calculation (default: 500)
+    unique      : only one distance per residue (default: 0 (0=no, 1=yes))
 
-If you want to calculate the shortest distance for a very 
-large selection, consider installing anaconda (https://www.anaconda.com/).
-Anaconda provides numpy which is needed for faster calculations.
-
-
-Usage: mindist selection1, selection2, [n=1, [t=500, [unique=False]]]
-
-selection1  : selection string for atoms in the first selection
-selection2  : selection string for atoms in the selection selection
-n           : number of distances to calculate (default: 1)
-t           : threshold of number of atoms if using non-numpy calculation (default: 500)
-unique      : only one distance per residue (default: 0 (0=no, 1=yes))
+EXAMPLE
+    mindist chain A, chain D
+    mindist chain A, chain D, n=10, unique=1
 """
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201213
