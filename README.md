@@ -33,3 +33,11 @@ Usage: mutate selection, resname
 selection   : selection string, all residues are mutated to the same resname
 resname     : name of the residue to mutate to, can be one or three letter code
 
+### fasta
+
+Very simple script to just print the fasta sequence of a selection
+
+Usage: fasta selection
+
+selection: selection string
+
