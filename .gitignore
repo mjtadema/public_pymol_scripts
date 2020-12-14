@@ -2,3 +2,4 @@ venv
 test
 docker.sh
 __pycache__
+.coverage
