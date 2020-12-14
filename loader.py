@@ -53,7 +53,7 @@ except (FileNotFoundError, ResponseOutOfDate):
     objects = response.json()
 
 # Search for pymol modules
-exclude =  ["loader.py", "readme.py"]
+exclude =  ["loader.py", "readme.py", "test_all.py"]
 modules = {}
 for obj in objects:
     name = obj['name']

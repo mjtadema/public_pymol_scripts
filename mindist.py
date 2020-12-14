@@ -19,11 +19,14 @@ unique      : only one distance per residue (default: 0 (0=no, 1=yes))
 """
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201213
+
 from pymol import cmd
+import warnings
+warnings.simplefilter('error', ResourceWarning)
 try:
     import numpy as np
 except:
-    pass
+    warnings.warn("Using mindist without numpy; limit your selections to few atoms.")
 
 
 def gen_index(selection) -> int:
@@ -31,7 +34,6 @@ def gen_index(selection) -> int:
     model = cmd.get_model(selection)
     for at in model.atom:
         yield int(at.index)
-
 
 def gen_pairs(selection1, selection2, *, t=500) -> tuple:
     "Exhaustively generate index pairs for all atoms in selection"
@@ -42,7 +44,8 @@ def gen_pairs(selection1, selection2, *, t=500) -> tuple:
     l2 = len(set_selection2)
     l = sum([l1, l2])
     if l > t:
-        raise Exception(f"Using slow (non numpy) implementation with too many atoms ({l}> {t}). Consider selecting fewer atoms or installing numpy/conda.")
+        msg = f"Using slow (non numpy) implementation with too many atoms ({l}> {t}). Consider selecting fewer atoms or installing numpy/conda."
+        warnings.warn(msg, ResourceWarning)
     # ensure that all pairs are unique
     diff_selection2 = set_selection1.difference(set_selection2)
     for i in set_selection1:
@@ -115,11 +118,12 @@ def idx_to_resi(idx: int) -> int:
 ir = idx_to_resi # abbrev
     
 
-def mindist(selection1, selection2, n=1, t=500, unique=0):
+def mindist(selection1, selection2, n=1, t=500, unique=0, _legacy=0):
     try:
-        import numpy as np
+        if int(_legacy) != 0:
+            raise ImportError("Used for testing without numpy")
         gen_mindist = get_mindist_np(selection1, selection2)
-    except (ImportError, NotImplementedError):
+    except (NameError, ImportError, NotImplementedError):
         gen_mindist = get_mindist(selection1, selection2, t=500)
     resi_pairs = [] # keep track of residue pairs in case we want to skip
     count = 0
