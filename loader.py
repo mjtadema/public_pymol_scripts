@@ -2,7 +2,7 @@
 Loader script to dynamically load pymol scripts in pymol
 """
 author = "Matthijs J. Tadema, MSc (2020)"
-version = 20201213
+version = 20201214
 import requests
 from pymol import cmd
 import sys
@@ -32,7 +32,7 @@ try:
         raise FileNotFoundError
 
     # Check if file is out of date
-    if delta_hours(response_file) >= 2:
+    if delta_hours(response_file) >= 1:
         raise ResponseOutOfDate
 
     print("Reading cached list")
@@ -66,7 +66,7 @@ for module, url in modules.items():
     try:
         module_path = Path(cachedir/module)
         assert module_path.exists()
-        assert delta_hours(module_path) <= 2
+        assert delta_hours(module_path) <= 0.5
     except AssertionError:
         print(f"Caching {module}")
         with open(module_path, 'wb') as fout:
