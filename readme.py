@@ -20,7 +20,7 @@ Collection of pymol scripts written primarily for Giovanni Maglia's group member
 Copy paste `{pymolrc}` into [your own pymolrc file](https://pymolwiki.org/index.php/Pymolrc). This will make PyMOL load the scripts automatically at startup.
 """
 
-exclude = ['loader.py', 'readme.py']
+exclude = ['loader.py', 'readme.py', 'test_all.py']
 
 modules = []
 for f in scriptdir.iterdir():
