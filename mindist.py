@@ -26,7 +26,7 @@ warnings.simplefilter('error', ResourceWarning)
 try:
     import numpy as np
 except:
-    warnings.warn("Using mindist without numpy; limit your selections to few ataoms.")
+    warnings.warn("Using mindist without numpy; limit your selections to few atoms.")
 
 
 def gen_index(selection) -> int:
