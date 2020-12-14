@@ -1,6 +1,7 @@
 from pymol import cmd
 from mindist import mindist
 from mutate import mutate
+from fasta import fasta
 
 cmd.fetch('4tsy')
 
@@ -20,3 +21,6 @@ def test_mindist():
 
 def test_mutate():
     mutate("resi 12", "R")
+
+def test_fasta():
+    fasta('(all)')
