@@ -23,6 +23,7 @@ from pathlib import Path
 import sys
 cachedir = Path.home()/"mjtadema_pymol_cache"
 sys.path.append(cachedir.name)
+print(sys.path, "testing..")
 from princ_align import princ_align
 
 
