@@ -1,5 +1,12 @@
 """
-Align a selection such that its principle axes are aligned with the x, y, z axes
+DESCRIPTION
+    Transform a selection such that its principle axes are aligned with the x, y, z axes
+
+ARGUMENTS
+    selection: a selection string
+
+EXAMPLE
+    princ_align obj01
 
 """
 author = "Matthijs J. Tadema, MSc (2020)"
@@ -87,5 +94,6 @@ def princ_align(selection='(all)'):
     cmd.center()
     return eig_vec # Just in case i need them later
 
+princ_align.__doc__ = __doc__
 cmd.extend('princ_align', princ_align)
 cmd.auto_arg[0][princ_align] = [cmd.selection_sc, 'selection', '']

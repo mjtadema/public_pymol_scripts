@@ -89,6 +89,18 @@ ARGUMENTS
 EXAMPLE
     fasta chain A
 
+### princ_align
+
+DESCRIPTION
+    Transform a selection such that its principle axes are aligned with the x, y, z axes
+
+ARGUMENTS
+    selection: a selection string
+
+EXAMPLE
+    princ_align obj01
+
+
 ### merge_chains
 
 DESCRIPTION
