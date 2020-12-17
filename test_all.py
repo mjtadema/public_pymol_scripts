@@ -5,6 +5,7 @@ from fasta import fasta
 from axes import axes
 from split_chains import split_chains
 from merge_chains import merge_chains
+from princ_align import princ_align
 
 cmd.fetch('4tsy')
 
@@ -38,3 +39,6 @@ def test_split_chains():
 def test_merge_chains():
     merge_chains('4tsy')
 
+def test_princ_align():
+    princ_align('4tsy')
+    
