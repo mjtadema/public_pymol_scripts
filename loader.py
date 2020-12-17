@@ -72,6 +72,9 @@ for module, url in modules.items():
         with open(module_path, 'wb') as fout:
             reponse = requests.get(url)
             fout.write(reponse.content)
+    
+# Cache first, load later..
+for module in modules.keys():
     # Finally load the module and inform the user
     cmd.run(str(module_path.absolute()))
     print(f"Loaded {module}")
