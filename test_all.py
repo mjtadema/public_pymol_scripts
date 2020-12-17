@@ -6,6 +6,7 @@ from axes import axes
 from split_chains import split_chains
 from merge_chains import merge_chains
 from princ_align import princ_align
+from carve import carve
 
 cmd.fetch('4tsy')
 
@@ -41,4 +42,7 @@ def test_merge_chains():
 
 def test_princ_align():
     princ_align('4tsy')
+    
+def test_carve():
+    carve('4tsy', view_key='F1')
     
