@@ -63,36 +63,56 @@ def get_mindist(selection1, selection2, **kwargs):
     Warn if selecting too many atoms
     t: int, threshold value
     """
+    raise NotImplementedError("Have to fix this again")
     all_distances = {pair: d for pair, d in get_distances(selection1, selection2, **kwargs)}    
     sortkey = lambda x: all_distances[x]
     min_pairs = sorted(all_distances.keys(), key=sortkey)
     for min_pair in min_pairs:
         yield min_pair
 
-def get_mindist_np(selection1, selection2):
+
+class Selection:
+    """
+    Generate indices and an object name 
+    """
+    def __init__(self, sele_str):
+        """
+        Make a sele_str object to keep some stuff together
+        """
+        index = []
+        coord = []
+        obj = cmd.get_object_list(sele_str)
+        if len(obj) != 1:
+            raise NotImplementedError("Selection should be in a single object")
+        for at in cmd.get_model(sele_str).atom:
+            x, y, z = [float(n) for n in at.coord]
+            coord.append((x, y, z))
+            index.append(int(at.index))
+        self.index = index
+        self.coord = coord
+        self.obj = obj[0]
+
+    def remove_dupes(self, sele):
+        """
+        Remove duplicates 
+        """
+        tmp = []
+        # if the objects are different, there are no duplicates
+        if self.obj != sele.obj:
+            return
+        for i in self.index:
+            if not i in sele.index:
+                tmp.append(i)
+        self.index = tmp
+
+
+def get_mindist_np(sele_1, sele_2):
     """
     Calculate distances using numpy
     """
-    # Generate two arrays for coordinates
-    index_1 = []
-    coord_1 = []
-    for at in cmd.get_model(selection1).atom:
-        x, y, z = [float(n) for n in at.coord]
-        coord_1.append((x, y, z))
-        index_1.append(int(at.index))
-    index_2 = []
-    coord_2 = []
-    for at in cmd.get_model(selection2).atom:
-        x, y, z = [float(n) for n in at.coord]
-        coord_2.append((x, y, z))
-        idx = int(at.index)
-        if idx not in index_1:
-            index_2.append(int(at.index))
-            # Else just skip, don't want duplicates
-
     # Calculate distance matrix
-    coord_1 = np.array(coord_1)
-    coord_2 = np.array(coord_2)
+    coord_1 = np.array(sele_1.coord)
+    coord_2 = np.array(sele_2.coord)
     matrix = np.subtract(coord_1[:,None], coord_2[None,:])
     dm = np.linalg.norm(matrix, axis=2)
     # Min index of the matrix
@@ -102,7 +122,7 @@ def get_mindist_np(selection1, selection2):
         # Min indices unraveled
         idx1, idx2 = np.unravel_index(idx, np.shape(dm))
         # Back to atom indices
-        min_pair = (index_1[idx1], index_2[idx2])
+        min_pair = (sele_1.index[idx1], sele_2.index[idx2])
         yield min_pair
 
 
@@ -115,11 +135,16 @@ def idx_to_resi(idx: int) -> int:
 ir = idx_to_resi # abbrev
     
 
-def mindist(selection1, selection2, n=1, t=500, unique=0):
+def mindist(selection1, selection2, n=1, t=500, unique=0, _legacy=0):
+    # Create selection objects 
+    sele_1 = Selection(selection1)
+    sele_2 = Selection(selection2)
+    sele_2.remove_dupes(sele_1)
     try:
-        import numpy as np
-        gen_mindist = get_mindist_np(selection1, selection2)
-    except (ImportError, NotImplementedError):
+        if int(_legacy) != 0:
+            raise ImportError("Used for testing without numpy")
+        gen_mindist = get_mindist_np(sele_1, sele_2)
+    except (NameError, ImportError, NotImplementedError):
         gen_mindist = get_mindist(selection1, selection2, t=500)
     resi_pairs = [] # keep track of residue pairs in case we want to skip
     count = 0
@@ -137,7 +162,7 @@ def mindist(selection1, selection2, n=1, t=500, unique=0):
             continue
         else:
             resi_pairs.append(resi_pair)
-        cmd.distance(f"mindist_{a}_{b}", f"index {a}", f"index {b}")
+        cmd.distance(f"mindist_{a}_{b}", f"index {a} and {sele_1.obj}", f"index {b} and {sele_2.obj}")
         count += 1
 
 mindist.__doc__ = __doc__
