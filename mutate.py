@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """
-Do mutations on several chains at once.
+DESCRIPTION
+    Do mutations on an entire selection at once.
+    Use default rotamers (by default the lowest strain).
 
-Usage: mutate selection, resname
+ARGUMENTS
+    selection   : selection string, all residues are mutated to the same resname
+    resname     : name of the residue to mutate to, can be one or three letter code
 
-selection   : selection string, all residues are mutated to the same resname
-resname     : name of the residue to mutate to, can be one or three letter code
+EXAMPLE
+    mutate resi 10, ARG
+    mutate resi -1, A
+    mutate resi 12 and chain A, G
 """
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201213

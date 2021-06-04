@@ -1,29 +1,35 @@
 #!/usr/bin/env python3
 """
-Calculate distances between all atoms
-in selection1 and selection2, then make a 
-distance object for the smallest distance.
+DESCRIPTION
+    Calculate distances between all atoms
+    in selection1 and selection2, then make a 
+    distance object for the smallest distance.
+    
+    If you want to calculate the shortest distance for a very 
+    large selection, consider installing anaconda (https://www.anaconda.com/).
+    Anaconda provides numpy which is needed for faster calculations.
+    
+ARGUMENTS
+    selection1  : selection string for atoms in the first selection
+    selection2  : selection string for atoms in the selection selection
+    n           : number of distances to calculate (default: 1)
+    t           : threshold of number of atoms if using non-numpy calculation (default: 500)
+    unique      : only one distance per residue (default: 0 (0=no, 1=yes))
 
-If you want to calculate the shortest distance for a very 
-large selection, consider installing anaconda (https://www.anaconda.com/).
-Anaconda provides numpy which is needed for faster calculations.
-
-
-Usage: mindist selection1, selection2, [n=1, [t=500, [unique=False]]]
-
-selection1  : selection string for atoms in the first selection
-selection2  : selection string for atoms in the selection selection
-n           : number of distances to calculate (default: 1)
-t           : threshold of number of atoms if using non-numpy calculation (default: 500)
-unique      : only one distance per residue (default: 0 (0=no, 1=yes))
+EXAMPLE
+    mindist chain A, chain D
+    mindist chain A, chain D, n=10, unique=1
 """
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201213
+
 from pymol import cmd
+import warnings
+warnings.simplefilter('error', ResourceWarning)
 try:
     import numpy as np
 except:
-    pass
+    warnings.warn("Using mindist without numpy; limit your selections to few atoms.")
 
 
 def gen_index(selection) -> int:
@@ -31,7 +37,6 @@ def gen_index(selection) -> int:
     model = cmd.get_model(selection)
     for at in model.atom:
         yield int(at.index)
-
 
 def gen_pairs(selection1, selection2, *, t=500) -> tuple:
     "Exhaustively generate index pairs for all atoms in selection"
@@ -42,7 +47,8 @@ def gen_pairs(selection1, selection2, *, t=500) -> tuple:
     l2 = len(set_selection2)
     l = sum([l1, l2])
     if l > t:
-        raise Exception(f"Using slow (non numpy) implementation with too many atoms ({l}> {t}). Consider selecting fewer atoms or installing numpy/conda.")
+        msg = f"Using slow (non numpy) implementation with too many atoms ({l}> {t}). Consider selecting fewer atoms or installing numpy/conda."
+        warnings.warn(msg, ResourceWarning)
     # ensure that all pairs are unique
     diff_selection2 = set_selection1.difference(set_selection2)
     for i in set_selection1:
