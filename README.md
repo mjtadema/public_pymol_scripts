@@ -22,6 +22,23 @@ EXAMPLE
 SEE ALSO
     merge_chains
 
+### carve
+
+DESCRIPTION
+    Clip a selection through the ZY-plane of its principal axes
+
+ARGUMENTS
+    selection: selection string
+    cut_range: slab thickness
+    view_key: optionally store the resulting view as an F key
+
+EXAMPLE
+    carve
+    carve obj1
+    carve obj1, 20
+    carve obj1, view_key=F1 
+
+
 ### axes
 
 DESCRIPTION
@@ -88,6 +105,18 @@ ARGUMENTS
 
 EXAMPLE
     fasta chain A
+
+### princ_align
+
+DESCRIPTION
+    Transform a selection such that its principle axes are aligned with the x, y, z axes
+
+ARGUMENTS
+    selection: a selection string
+
+EXAMPLE
+    princ_align obj01
+
 
 ### merge_chains
 

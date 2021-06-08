@@ -63,10 +63,13 @@ class PutCenterCallback(object):
 def axes(name='axes', zero=0):
 
     cmd.set('auto_zoom', 0)
-
-    w = 0.06 # cylinder width
-    l = 0.75 # cylinder length
-    h = 0.25 # cone hight
+    
+    s = 1.0
+    if int(zero) > 0:
+        s = 10.0
+    w = 0.06*s # cylinder width
+    l = 0.75*s # cylinder length
+    h = 0.25*s # cone hight
     d = w * 1.618 # cone base diameter
 
     obj = [cgo.CYLINDER, 0.0, 0.0, 0.0,   l, 0.0, 0.0, w, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
