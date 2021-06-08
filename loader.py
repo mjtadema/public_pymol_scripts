@@ -76,6 +76,7 @@ for module, url in modules.items():
 # Cache first, load later..
 for module in modules.keys():
     # Finally load the module and inform the user
+    module_path = Path(cachedir/module)
     cmd.run(str(module_path.absolute()))
     print(f"Loaded {module}")
     
