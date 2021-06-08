@@ -26,7 +26,8 @@ def get_principal_axes(coords):
     inertia = np.dot(coords.T, coords)
     eig_val, eig_vec = np.linalg.eig(inertia)
     # Order by largest eigenvalue
-    order = np.argsort(eig_val)
+    # Needed to be in reverse....
+    order = list(reversed(np.argsort(eig_val)))
     eig_val = eig_val[order]
     eig_vec = eig_vec[:, order].T
     return eig_vec
@@ -60,7 +61,7 @@ def rotation_matrix_from_vectors(vec1, vec2):
 def princ_align(selection='(all)'):
 
     model = cmd.get_model(f"{selection} and name CA")
-    coords = [at.coord for at in model.atom]
+    coords = np.array([at.coord for at in model.atom])
     try:
         center = np.mean(coords, axis=0)
     except NameError:
@@ -71,15 +72,16 @@ def princ_align(selection='(all)'):
     eig_vec = get_principal_axes(coords)
     # Now i have to calculate angles...
     # largest should be aligned with Z-axis
-    Ox = np.array([1, 0, 0])
-    Oy = np.array([0, 1, 0])
-    Oz = np.array([0, 0, 1])
+    x0 = np.array([1, 0, 0])
+    y0 = np.array([0, 1, 0])
+    z0 = np.array([0, 0, 1])
 
     # Transform everything such that it is centered around
     # selection's center, and rotated
     # Such that the principal axes of the selection
     # align with those of the frame of reference
-    rot_mat = rotation_matrix_from_vectors(eig_vec[0], Oz)
+    # For some reason x0 is the right one to align with the z-axis
+    rot_mat = rotation_matrix_from_vectors(eig_vec[0], x0)
     
     TTT = [
             *rot_mat[0], -center[0],
@@ -92,6 +94,7 @@ def princ_align(selection='(all)'):
     
     # Finally center all
     cmd.center()
+
     return eig_vec # Just in case i need them later
 
 princ_align.__doc__ = __doc__
