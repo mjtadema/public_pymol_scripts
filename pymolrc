@@ -1,7 +1,0 @@
-#run https://raw.githubusercontent.com/mjtadema/public_pymol_scripts/master/loader.py
-bg_color white
-run mindist.py
-fetch 4tsy, async=0, type=pdb1
-split_states 4tsy
-delete 4tsy
-mindist chain A and 4tsy_0001, chain A and 4tsy_0002
