@@ -10,12 +10,6 @@ from hashlib import sha1 as sha
 
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201214
-import requests
-from pymol import cmd
-import sys
-from pathlib import Path
-from datetime import datetime
-import json
 
 
 class ResponseOutOfDate(Exception): pass
@@ -75,7 +69,6 @@ for obj in objects:
 for module, (url, hash_remote) in modules.items():
     module_path = Path(cachedir / module)
     try:
-        module_path = Path(cachedir/module)
         assert module_path.exists()
         # Change this to test for changes (/w file hashes)
         with open(module_path, 'rb') as file_to_hash:
