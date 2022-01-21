@@ -32,7 +32,8 @@ try:
         raise FileNotFoundError
 
     # Check if file is out of date
-    if delta_hours(response_file) >= 1:
+    # This can be much much longer, changed to 24
+    if delta_hours(response_file) >= 24:
         raise ResponseOutOfDate
 
     print("Reading cached list")
