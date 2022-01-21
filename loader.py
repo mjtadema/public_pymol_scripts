@@ -1,6 +1,13 @@
 """
 Loader script to dynamically load pymol scripts in pymol
 """
+import requests
+from pymol import cmd
+from pathlib import Path
+from datetime import datetime
+import json
+from hashlib import sha1 as sha
+
 author = "Matthijs J. Tadema, MSc (2020)"
 version = 20201214
 import requests
@@ -61,14 +68,27 @@ for obj in objects:
     name = obj['name']
     if name in exclude: continue
     if name.endswith(".py"):
-        modules[obj['name']] = obj['download_url']
+        # Add also file hash
+        modules[obj['name']] = (obj['download_url'], obj['sha'])
 
 # Update cached modules
-for module, url in modules.items():
+for module, (url, hash_remote) in modules.items():
+    module_path = Path(cachedir / module)
     try:
         module_path = Path(cachedir/module)
         assert module_path.exists()
-        assert delta_hours(module_path) <= 0.5
+        # Change this to test for changes (/w file hashes)
+        with open(module_path, 'rb') as file_to_hash:
+            b_file = file_to_hash.read()
+            # Apparently git uses this weird way of hashing files which includes
+            # "blob {length of file}\0" (\0 being NULL)
+            b_blob = b'blob ' + bytearray(str(len(b_file)), 'utf-8') + b'\0'
+            hash_local = sha(b_blob + b_file).hexdigest()
+        print(f"Reading {module} hash")
+        print(f"Remote hash {hash_remote}")
+        print(f"Local hash {hash_local}")
+        assert hash_local == hash_remote
+        print(f"{module} is up to date")
     except AssertionError:
         print(f"Caching {module}")
         with open(module_path, 'wb') as fout:
