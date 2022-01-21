@@ -55,8 +55,7 @@ except (FileNotFoundError, ResponseOutOfDate):
     objects = response.json()
 
 # Search for pymol modules
-exclude = ["readme.py", "test_all.py"]
-exclude_load = ["loader.py"]
+exclude = ["loader.py", "readme.py", "test_all.py"]
 modules = {}
 for obj in objects:
     name = obj['name']
@@ -90,7 +89,6 @@ for module, (url, hash_remote) in modules.items():
     
 # Cache first, load later..
 for module in modules.keys():
-    if module in exclude_load: continue
     # Finally load the module and inform the user
     module_path = Path(cachedir/module)
     cmd.run(str(module_path.absolute()))
